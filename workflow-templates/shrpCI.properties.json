@@ -1,0 +1,8 @@
+{
+    "name": "SHRP Workflow",
+    "description": "SHRP CI workflow template.",
+    "iconName": "logo",
+    "filePatterns": [
+        "*.*"
+    ]
+}
