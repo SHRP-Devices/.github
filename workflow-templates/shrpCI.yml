@@ -21,7 +21,7 @@ env:
   FLAVOR: "eng"
   # eng by default, change the variable if you want userdebug
   EXTRA_CMD: ""
-  # For qualcomm devices put git clone https://github.com/omnirom/android_vendor_qcom_opensource_commonsys --depth=1 -b android-9.0 vendor/qcom/opensource/commonsys in EXTRA CMD
+  # For qualcomm FDE devices put git clone https://github.com/omnirom/android_vendor_qcom_opensource_commonsys --depth=1 -b android-9.0 vendor/qcom/opensource/commonsys in EXTRA CMD
   # If you want to Execute any external Command Before Compilation Starts
   TZ: "Asia/Kolkata"
   TOKEN: ${{ secrets.BOTTOKEN }}
@@ -57,7 +57,7 @@ jobs:
          if: ${{ github.event.inputs.pushtosf }} == 'true'
          run: |
               cd ${BuildPath}/out/target/product/${CODENAME}/
-              sudo apt-get install expect -y
+              sudo apt-get update -y && sudo apt-get install expect -y
               expect -c '
               spawn sftp ${{ secrets.SFUSER }}@frs.sourceforge.net
               expect \"yes/no\"
@@ -65,7 +65,7 @@ jobs:
               expect \"Password\"       
               send "${{ secrets.SFPASS }}\r"
               expect \"sftp> \"
-              send "cd cd /home/frs/project/shrp/${CODENAME}/\r"
+              send "cd /home/frs/project/shrp/$::env(CODENAME)/\r"
               set timeout -1
               send "put *stable*.zip\r"
               expect "Uploading"
