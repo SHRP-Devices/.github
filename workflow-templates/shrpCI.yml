@@ -25,6 +25,7 @@ env:
   # If you want to Execute any external Command Before Compilation Starts
   TZ: "Asia/Kolkata"
   TOKEN: ${{ secrets.BOTTOKEN }}
+  PUSHTOSF: {{ github.event.inputs.pushtosf }}
 
 jobs:
   shrpCI:
@@ -54,7 +55,7 @@ jobs:
                   -F caption=" <i> SHRP AddOnRescue </i> for <b> '$VENDOR' '$CODENAME' </b> | <i> #SHRP Recovery </i> "
 
        - name: PUSH to SF
-         if: ${{ github.event.inputs.pushtosf }} == 'true'
+         if: ${{ env.PUSHTOSF }} == 'true'
          run: |
               cd ${BuildPath}/out/target/product/${CODENAME}/
               sudo apt-get update -y && sudo apt-get install expect -y
