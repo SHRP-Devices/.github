@@ -55,27 +55,31 @@ jobs:
                   -F caption=" <i> SHRP AddOnRescue </i> for <b> '$VENDOR' '$CODENAME' </b> | <i> #SHRP Recovery </i> "
 
        - name: PUSH to SF
-         if: ${{ env.PUSHTOSF }} == 'true'
          run: |
-              cd ${BuildPath}/out/target/product/${CODENAME}/
-              sudo apt-get update -y && sudo apt-get install expect -y
-              expect -c '
-              spawn sftp ${{ secrets.SFUSER }}@frs.sourceforge.net
-              expect \"yes/no\"
-              send "yes\r"
-              expect \"Password\"       
-              send "${{ secrets.SFPASS }}\r"
-              expect \"sftp> \"
-              send "cd /home/frs/project/shrp/$::env(CODENAME)/\r"
-              set timeout -1
-              send "put *stable*.zip\r"
-              expect "Uploading"
-              expect "*100%*"
-              expect "sftp*"
-              send "put *AddonRescue*.zip\r"
-              expect "Uploading"
-              expect "*100%*"
-              expect "sftp*"
-              send "bye\r"
-              interact
-              '
+              if [[ "$PUSHTOSF" == "true" ]]; then
+                 printf "pushing to SF\n"
+                 cd ${BuildPath}/out/target/product/${CODENAME}/
+                 sudo apt-get update -y && sudo apt-get install expect -y
+                 expect -c '
+                 spawn sftp ${{ secrets.SFUSER }}@frs.sourceforge.net
+                 expect \"yes/no\"
+                 send "yes\r"
+                 expect \"Password\"       
+                 send "${{ secrets.SFPASS }}\r"
+                 expect \"sftp> \"
+                 send "cd /home/frs/project/shrp/$::env(CODENAME)/\r"
+                 set timeout -1
+                 send "put *stable*.zip\r"
+                 expect "Uploading"
+                 expect "*100%*"
+                 expect "sftp*"
+                 send "put *AddonRescue*.zip\r"
+                 expect "Uploading"
+                 expect "*100%*"
+                 expect "sftp*"
+                 send "bye\r"
+                 interact
+                 '
+              else
+                 printf "skipping sf pushing"
+              fi
