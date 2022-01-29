@@ -20,6 +20,8 @@ env:
   # Set as recoveryimage (or bootimage if no recovery partition avaiable)
   FLAVOR: "eng"
   # eng by default, change the variable if you want userdebug
+  SOURCE: "omni"
+  # Set as omni (or twrp if using v3_11.0)
   EXTRA_CMD: ""
   # For qualcomm FDE devices put git clone https://github.com/omnirom/android_vendor_qcom_opensource_commonsys --depth=1 -b android-9.0 vendor/qcom/opensource/commonsys in EXTRA CMD
   # If you want to Execute any external Command Before Compilation Starts
@@ -36,7 +38,7 @@ jobs:
          uses: rokibhasansagar/slimhub_actions@main
 
        - name: Recovery Compilation
-         uses: ElytrA8/Recovery-Compiler@production
+         uses: SHRP-Devices/Recovery-Compiler@release
 
        - name: PUSH To TG
          run: |
